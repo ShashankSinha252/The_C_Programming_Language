@@ -1,0 +1,325 @@
+@@@ START @@@
+
+*** 2.0 @ Introduction ***
+
+- Variables and constants are basic data objects manipulated in a program
+- Declarations list the variables to be used. It states their type and possible
+  initial values
+- Operators specify what needs to be done with variables and constants
+- Expressions are formed by combining variables and constants to get new values
+- Type of a data object determines possible set of values and operations allowed
+  on it
+
+*** 2.1 @ Variable Names ***
+
+- There are some restriction on name of variables and symbolic constants
+- Names are made up of letters and digits; first character must be a letter; '_'
+  counts as a letter
+- DON'T begin variable names with '_' as library routines often use it
+- As per C99, 31 case-sensitive characters for external names and 63 for
+  internal names
+- Keywords are reserved and cannot be used as variable names
+- It is good to use variable names that reflect usage
+- It is good practice to use short names for local variables and long names for
+  external variables
+
+*** 2.2 @ Data Types and Size ***
+
+- C has few basic data types:
+
+    * char  : Single byte, capable of holding one character
+    * int   : Integer, usually same as natural size of integer on host machine
+    * float : Single precision floating point
+    * double: Double precision floating point
+
+- 'short' and 'long' can be qualifiers applied to 'int'
+- short and int are at least 16 bits; long is at least 32 bits; short is no
+  longer than int, which is no longer than long
+- Same approach as above is applied to 'long long', which is at least 64 bits
+- 'signed' and 'unsigned' qualifier may be applied to 'char' or any other
+  integer
+- unsigned numbers are always positive or zero and obey laws of arithmetic
+  modulo 2^n (2 raised to power n), where n is number of bits in the type
+- Plain char, depending on machine, can be unsigned or signed
+- Printable chars are always positive
+- 'long double' specifies extended precision floating point
+- Size of floating point objects is implementation defined
+
+- Standard headers <limits.h> and <float.h> contain symbolic constants for all
+  sizes, along with other properties of machine and compiler
+
+*** 2.3 @ Constants ***
+
+- '1234' is an integer constant
+- A long constant is written as '1234L' or '1234l'
+- Unsigned integers are written with terminal 'u' or 'U'; suffix 'ul' or 'UL'
+  indicates unsigned long
+- Floating point constants contain a decimal point (2.14) or an exponent (1e-2)
+- A floating point constant is double, unless specified
+- Suffix 'f' or 'F' indicates float constant; 'l' or 'L' indicate long double
+
+- Value of integer can also be specified in octal and hexadecimal; integer
+  constant with leading zero '0' is octal, leading with '0x' is hexadecimal
+- Octal and hexadecimal constant can also be followed by 'L' or 'U'
+- Character constant is an integer written as one character, such as 'x'
+- Value of character constant is numeric value of character in machine's
+  character set
+- Character constants participate in numeric operations as any other integer,
+  though usually used for comparison with other characters
+
+- Certain characters can be represented in character and string constant by
+  escape sequence like '\n'; the sequence of 2 characters represent one
+character in machine's character set
+- Arbitrary byte-sized pattern can be specified using:
+    @ '\ooo' :  ooo is one to three octal digits
+    @ '\xhh' :  hh is one or more hexadecimal digits
+- '\0' is used to represent null character, with integer value of 0
+
+- A constant expression is one which involves only constants; It may be
+  evaluated during compilation instead of run-time; it may be used in any place
+  where a constant can occur
+- A string constant (string literal) is a sequence of zero or more characters
+  surrounded in double quotes, with quotes acting as delimiters
+- String constants can be concatenated during compile time
+
+    "hello," " world" is same as "hello, world"
+
+- A string constant is an array of characters. Internal representation has null
+  character at end of string, so physical storage is one more than number of
+  characters in string
+- A string has no limit on how long it can be, but program must scan a string
+  completely to determine it's length
+- strlen(s) returns length of string 's' excluding null character
+
+- 'x' is a character constant, which is not same as "x", which is a string
+  constant
+
+- Enumeration constant is a list of constant integer values, like
+
+    enum boolean { NO, YES };
+
+- The first enum has value 0, next  1 and so on unless explicit values are
+  specified. If not all values are specified, unspecified values continue
+  progression from last specified value
+- Name in different enumerations must be distinct
+- Values in same enumeration need not be distinct
+- Variables of enum type may be generated but check is not performed to ensure
+  it holds a valid value
+
+*** 2.4 @ Declarations ***
+
+- All variables must be declared before use, although certain declarations can
+  be made implicitly by context
+- A declaration specifies a type and consists of list of one or more variables
+
+    int lower, line[100];
+
+- A variable may be initialized in its declaration. If the name is followed by
+  '=' and an expression, the expression serves as an initializer
+- If a variable s not automatic, it is initialized only once. It must be a
+  constant expression and initialized before execution starts
+- An explicitly initialized automatic variable is initialized each time the
+  function or block is entered; initializer may be any expression
+- External and static variables are initialized to zero by default; automatic
+  variables have garbage value if uninitialized
+
+- 'const' qualifier for any variable specifies that its value must not be
+  changed
+- const declaration can be added to array argument to a function to indicate
+  that function doesn't modify it
+- Attempt to change const variable is implementation defined
+
+*** 2.5 @ Arithmetic Operators ***
+
+- Binary arithmetic operators are +, -, *, / and %
+- Integer division truncates any fractional part
+
+- % cannot be applied to float or double
+- Direction of truncation for / and sign of result for % are machine dependent
+  for negative operands
+- Action on overflow and underflow is machine dependent
+
+- '+' and '-' have same precedence, which is lower than *, / and %
+- Unary '+' and '-' have higher precedence than above operators
+- Arithmetic operators associate left to right
+
+*** 2.6 @ Relational and Logical Operators ***
+
+- Relational operators '>', '>=', '<' and '<=' have same precedence
+- '==' and '!=' have precedence lower than above relational operators
+- Relational operators have lower precedence than arithmetic operators
+
+- Logical operators '&&' and '||' associate left to right; evaluation stops as
+  soon as truth or falsehood of result is known
+
+- C programs rely on above behavior. For example,
+
+    for (i = 0; i < lim-1 && (c = getchar()) != '\n' && c != EOF; ++i)
+
+    Before reading a new character, we need to ensure there is room in array to
+    store it. If test fails (i < lim-1), we must not go and read another
+    character
+
+- By definition, numerical value of a relational or logical expression is 1 if
+  relation is true and 0 if relation is false
+- Unary operator '!' converts a non-zero operand into 0 and a zero operand into
+  1
+
+*** 2.7 @ Type Conversions ***
+
+- When an operator has operands of different kinds, they are converted to a
+  common type according to small number of rules
+- In general, automatic conversions happen from 'narrower' operand to 'wider'
+  operand, without losing information
+- Expressions that don't make sense, like a float using a subscript, are
+  disallowed
+- Expressions that may lose information, like assigning longer integer type to
+  short may draw a warning but are not illegal
+- Char is basically a small integer, so it is freely used in arithmetic
+  expressions
+- Promotion of char may or may not create a negative integer; it is
+  implementation defined
+- Standard header <ctype.h> defines a family of functions that provide tests and
+  conversions that are independent of character set
+
+- Functions like isdigit() may return any non-zero value for true. In the test
+  part of if, while, for, etc., "true" just means "non-zero"
+
+- In general, for arithmetic operators like + and * which are binary and have
+  operands of different types, the "lower" type is promoted to the "higher" type
+  before the operation proceeds
+
+- For no unsigned operands, quick informal rules:
+
+    @ If either operand is long double, convert other to double
+    @ If either operand is double, convert other to double
+    @ If either operand is float, convert other to float
+    @ Otherwise, convert char and short to int
+    @ Then, if either operand is long, convert other to long
+    @ Then, if either operand is long long, convert other to long long
+
+- Conversions take place across assignments; value of the right side is
+  converted to type of left side, which is type of the result
+- Longer integers are converted to shorter ones by dropping off excess higher
+  order bits
+
+- float to int causes truncation of fractional part
+- Value conversion from double to float is rounded or truncated based on
+  implementation
+
+- Floating point to integer conversions:
+  (COULD NOT FIND RULES FROM STANDARD)
+
+    @ Fractional part is truncated; integer part is represented as integer
+    @ If integer part cannot be represented as integer type, then
+        * for unsigned type, integer is largest representable number or 0, based
+          on sign
+        * for signed type, integer is largest or smallest representable number,
+          based on sign
+
+- Integer to floating point conversions:
+  (COULD NOT FIND RULES FROM STANDARD)
+
+    @ If value can be represented exactly in floating type, it is unchanged
+    @ If value being converted is in range of values but cannot be represented
+      exactly, then result is correctly rounded
+    @ If value is outside range of values that can be represented, it is
+      undefined
+
+- Type conversion also takes place when arguments are passed to functions
+- Explicit type conversion can be forced in any expression with unary operator
+  called "cast" of construction
+
+        (type-name) expression
+
+    Cast can be treated as if expression was assigned to variable of type cast,
+    which is used in place of whole construction
+
+- Cast operator has same high precedence as unary operators
+
+*** 2.8 @ Increment and Decrement Operators ***
+
+- Increment operator '++' adds 1 to operand
+- Decrement operator '--' subtracts from operand
+
+- '++' and '--' can be used as both prefix and postfix operators
+- 'n++' increments 'n' after it's value has been used; '++n' increments before
+  value usage
+- Increment and decrement operators can be applied only to variables
+
+*** 2.9 @ Bitwise Operators ***
+
+- C provides 6 bitwise operators, which can be used only on integer operands
+- Operators are:
+
+    &   Bitwise AND
+    |   Bitwise inclusive OR
+    ^   Bitwise exclusive OR
+    <<  Left shift
+    >>  Right shift
+    ~   Bitwise complement (unary)
+
+- One must distinguish between & and | from && and ||; former are bitwise
+  operators, latter are logical operators
+- Left shift is same as multiplying number by power of 2; right shifting may or
+  may not be sign extended, depending on machine
+- '~' operator produces one's complement of integer
+
+*** 2.10 @ Assignment Operators and Expressions ***
+
+- Assignment operators are of the form
+
+    'expr1 op= expr2' which is equivalent to
+    'expr1 = (expr1) op (expr2)'
+
+- Assignment statement has a value and can occur in expressions
+- In all such expressions, type of assignment expression is type of its left
+  operand and value is the value after the assignment
+
+*** 2.11 @ Conditional Expressions ***
+
+- Ternary operator "?:" provides a better way of writing a conditional
+  expression. A expression using ternary operator means
+
+    " expr1 ? expr2 : expr3 " is same as
+
+    if (expr1)
+        expr2
+    else
+        expr3
+
+- Only one of two expressions is evaluated; if expr1 is true, expr2 is
+  evaluated, else expr3 is evaluated
+- If expr2 and expr3 are of different types, the type of result is determined by
+  conversion rules already mentioned
+- Parenthesis around expr1 is not necessary as precedence of ?: is very low, but
+  its use leads to clean code
+
+*** 2.12 @ Precedence and Order of Evaluation ***
+
+- Operator "()" refers to function call
+- Since bitwise operators ^, & and | are lower in precedence that == , it is
+  recommended to use parenthesis to get proper result for bit-testing
+  expressions like
+
+    if ((x & MASK) == 0)
+
+- C does not specify order in which operands of an operator are evaluated,
+  except '&&', '||', '?:' and ','
+
+- For 'x = f() + g()', if both f() and g() alter the same variable, value of 'x'
+  depends on order of evaluation
+- Intermediate results should be stored in temporary variables
+- Similarly, the order in which function arguments are evaluated is not
+  specified
+
+- Side effect is when a variable is changed as by-product of evaluation of an
+  expression
+- If any expression has variables with side effects, order in which variables
+  are updated can cause ambiguity in evaluation
+
+    a[i] = i++;
+
+- All side effects on arguments take place before function is called
+
+@@@ END @@@
