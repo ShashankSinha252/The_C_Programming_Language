@@ -1,0 +1,4 @@
+*** 2-10 ***
+
+Rewrite the function lower, which convert upper case letters to lower case, with
+a conditional expression instead of if-else.
