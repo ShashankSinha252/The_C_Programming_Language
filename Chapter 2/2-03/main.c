@@ -1,6 +1,4 @@
 /*
- * NAME OF FILE: USAGE
- *
  * Copyright (c) 2018
  * Shashank Sinha
  *
