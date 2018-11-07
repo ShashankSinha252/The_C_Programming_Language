@@ -1,0 +1,167 @@
+@@@ START @@@
+
+*** 3.0 @ ***
+
+- Control flow statements of a language specify the order in which computations
+  are performed
+
+*** 3.1 @ Statements and Blocks ***
+
+- An expression followed by a semicolon is a statement
+- Unlike languages like Pascal, semicolon is a statement terminator
+- Braces '{' and '}' are used to group statements together in a compound
+  statement, referred to as block. They are syntactically equivalent of a single
+  statement
+- No semicolon is required after '}' of a block
+
+*** 3.2 @ If-Else ***
+
+- 'if-else' statement has following syntax
+
+    if (expr)
+        statement1
+    else
+        statement2
+
+    where else part is optional
+
+- 'expr' is evaluated; if it it true (expr evaluates to a non-zero value),
+  statement1 is executed. Otherwise, statement2 is executed.
+- When else part is omitted from a nested if sequence, else is associated with
+  the closest previous else-less if
+
+    if(n > 0)
+        if (a > b)
+            z = a;
+        else
+            z = b;
+
+    Here, else is associated with inner if condition
+
+*** 3.3 @ Else-If ***
+
+- The construction 
+
+    if (expr1)
+        statement1
+    else if (expr2)
+        statement2
+    else if (expr3)
+        statement3
+    else
+        statement-else
+
+    is general way of dealing with multi-way decision.
+
+- Expression are evaluated in order. If any of expression is true, statement 
+  associated with it is executed and chain is terminated.
+- 'else' part of the chain may be dropped if no action is required
+
+*** 3.4 @ Switch ***
+
+- 'switch' statement is a multi-way decision that tests whether an expression
+  matches one of a number of constant integer values and branches accordingly
+
+    switch(expr) {
+        case const-expr1: statements
+        case const-expr2: statements
+        default: statements
+        }
+
+- Each case is labeled by one or more integer valued constants or constant
+  expressions
+- If a case matches the expression value, execution starts at that case
+- All case expressions must be different
+- 'default' case is executed if none of the other cases are satisfied; it is
+  optional
+- Cases and default clause can occur in any order
+
+- 'break' causes an immediate exit from switch
+- As cases serve just as label, after code for a case is executed, execution
+  falls through to next unless stopped explicitly
+- 'break' and 'return' are most common ways to leave a switch
+- 'break' statement can be used to force immediate exit from 'while' , 'for' and
+  'do' loops
+
+- Add break after every case statement block possible  as good practice
+
+*** 3.5 @ Loops - While and For ***
+
+- while loop has following form
+
+    while(expr)
+        statement
+
+- Expression for while loop is evaluated; if non-zero, statement is executed and
+  expression is re-evaluated. This cycle continues till expression becomes zero,
+  at which point execution resumes after 'statement'
+
+- for loop has following form
+
+    for(expr1; expr2; expr3)
+        statement
+
+    which is equivalent to
+
+    expr1;
+    while (expr2)
+    {
+        statement
+        expr3;
+    }
+
+    except for behavior of 'continue'
+
+- Most commonly, expr1 and expr3 are assignment or function calls, while expr2
+  is relational expression
+- Any of the three expressions can be omitted, but semicolons must be retained
+- If expr2 is dropped, it is taken as permanently true
+
+- for (;;) { ... } is an infinite loop, which needs to be broken by a control
+  flow change like 'break' or 'return'
+- while loops are used usually when initialization or re-initialization is not
+  needed, for loops are used when it is needed
+
+- It is bad style to force unrelated computations into initialization and
+  increment of a for loop
+- It is beneficial to keep loop control centralized, especially in nested loops
+
+- The comma operator ',' is often found in 'for' statement
+- A pair of expressions separated by comma is evaluated left to right, the type
+  and value of result are type and value of right operand
+- The commas that separate function argument and variables in declaration, etc
+  are not common operators and do not guarantee left to right evaluation
+
+*** 3.6 @ Loops - Do-while ***
+
+- 'while' and 'for' loop check for termination condition at top; 'do-while'
+  tests at bottom after making each pass through loop body
+- It has the form
+
+    do
+        statement
+    while (expr);
+
+*** 3.7 @ Break and Continue ***
+
+- 'break' provides an early exits from 'for', 'while' and 'do' loop, as well as
+  from 'switch'; A break causes the innermost loop or switch to be exited
+  immediately
+
+- 'continue' statement causes next iteration of 'for', 'while' and 'do'
+- In 'while' and 'do' loop, continue causes test part to be immediately
+  executed; in 'for' loop, control passes to the increment step
+- 'continue' applies only to loops and not to 'switch'; a 'continue' inside a
+  switch inside a loop causes next loop iteration
+
+*** 3.8 @ Goto and Labels ***
+
+- There are a few situations where goto may be used. A common scenario is
+  abandon processing in middle of a deeply nested structure, such as two or more
+  loops at one. break can only exit from the innermost loop.
+
+- A label has the same form as a variable name and is followed by a colon
+- A label can be attached to any statement in the same function as goto
+- The scope of a label is the entire function
+
+@@@ END @@@
